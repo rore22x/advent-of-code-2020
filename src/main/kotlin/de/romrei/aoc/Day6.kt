@@ -3,10 +3,7 @@ package de.romrei.aoc
 object Day6 {
 
     fun part1(input: String){
-        val result = input.split("\n\n")
-                .map {countGroup(it) }
-                .sum()
-        println("Result: $result")
+        println("Result: ${input.split("\n\n").sumBy{ countGroup(it) }}")
     }
 
     private fun countGroup(group: String): Int {
@@ -14,21 +11,13 @@ object Day6 {
     }
 
     fun part2(input: String){
-        val result = input.split("\n\n")
-                .map {countGroupEvery(it) }
-                .sum()
-        println("Result: $result")
+        println("Result: ${input.split("\n\n").sumBy {countGroupEvery(it) }}")
     }
 
     private fun countGroupEvery(group: String): Int {
         val persons = group.split("\n").filter { it != "" }.toList()
-        val init = persons[0]
-        var count = 0
-        for(char in init.toCharArray()){
-            if(persons.count { it.toCharArray().contains(char) } == persons.size){
-                count++
-            }
-        }
-        return count
+        return persons[0].toCharArray()
+                .filter { answer -> persons.count { person -> person.toCharArray().contains(answer) } == persons.size }
+                .count()
     }
 }
