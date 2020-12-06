@@ -6,13 +6,18 @@ import java.nio.file.Paths
 object Common {
 
     fun getInput(day: Int, sample: Boolean = false): String {
-        val sb = StringBuilder()
         val suffix = if(sample){
             "sample.txt"
         } else {
             ".txt"
         }
-        Files.readAllLines(Paths.get("./data/day$day$suffix")).forEach { sb.append(it).append("\n") }
+        val file = "./data/day$day$suffix"
+        return read(file)
+    }
+
+    fun read(file: String): String {
+        val sb = StringBuilder()
+        Files.readAllLines(Paths.get(file)).forEach { sb.append(it).append("\n") }
         return sb.toString()
     }
 
