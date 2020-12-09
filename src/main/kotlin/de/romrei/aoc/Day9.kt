@@ -2,22 +2,21 @@ package de.romrei.aoc
 
 object Day9 {
 
-    fun part1(input: String) {
-        val lenPreamble = 25
-        val ints = parse(input)
+    fun part1(input: String, lenPreamble: Int = 25) {
+        val values = parse(input)
         var iter = lenPreamble
         while (true) {
-            val current = ints[iter]
-            val filtered = ints.subList(iter - lenPreamble, iter).sortedBy { it }.toList()
-            if (!findArgs(filtered, current)) {
-                println("Result $current")
+            val current = values[iter]
+            val filtered = values.subList(iter - lenPreamble, iter).sortedBy { it }.toList()
+            if (!isValidSequence(filtered, current)) {
+                println("Result $current (index: $iter)")
                 break
             }
             iter++
         }
     }
 
-    private fun findArgs(filtered: List<Long>, current: Long): Boolean {
+    private fun isValidSequence(filtered: List<Long>, current: Long): Boolean {
         for ((i, arg1) in filtered.withIndex()) {
             for ((j, arg2) in filtered.withIndex()) {
                 if (i == j) {
@@ -32,13 +31,11 @@ object Day9 {
     }
 
     fun part2(input: String, beginIndex: Int) {
-        val ints = parse(input)
-        val current = ints[beginIndex]
-        val filtered = ints.subList(0, beginIndex)
-        sequential(filtered, current)
+        val values = parse(input)
+        findSequence(parse(input).subList(0, beginIndex), values[beginIndex])
     }
 
-    private fun sequential(values: List<Long>, target: Long): Boolean {
+    private fun findSequence(values: List<Long>, target: Long): Boolean {
         for ((index, value) in values.withIndex()) {
             if (value >= target) {
                 continue
@@ -59,7 +56,7 @@ object Day9 {
             if (summe + values[nextIndex] == target) {
                 val min = allValues.minBy { it } ?: 0L
                 val max = allValues.maxBy { it } ?: 0L
-                println("result $min +  ${max} = ${min + max}")
+                println("Result $min + $max = ${min + max}")
                 return true
             } else if (summe + values[nextIndex] > target) {
                 return false
@@ -71,7 +68,7 @@ object Day9 {
         }
     }
 
-    fun parse(input: String): List<Long> {
+    private fun parse(input: String): List<Long> {
         return input.lines().filter { it.isNotEmpty() }.map { it.toLong() }.toList()
     }
 }
